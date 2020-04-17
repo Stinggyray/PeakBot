@@ -15,15 +15,10 @@ import java.nio.charset.StandardCharsets;
 public class APIWrangler {
     public static final String BASE_URL = "https://api.brawlstars.com/v1/";
 
-    public static JSONObject getJSONClub(String clubId){
-        if(!clubId.substring(0, 1).equals("#")){
-            clubId = "#" + clubId;
-        }
-        clubId = URLEncoder.encode(clubId, StandardCharsets.UTF_8);
-
+    public static JSONObject getJSONResponse(String uri) {
         try {
             CloseableHttpClient endpt = HttpClients.createDefault();
-            HttpGet get = new HttpGet(BASE_URL + "clubs/" + clubId);
+            HttpGet get = new HttpGet(uri);
             get.addHeader("Accept", "application/json");
             get.addHeader("authorization", "Bearer " + BotConfig.BRAWLSTARS_API_TOKEN);
 
@@ -39,6 +34,26 @@ public class APIWrangler {
         throw new RuntimeException();
     }
 
+    public static JSONObject getJSONClub(String clubId){
+        if(!clubId.substring(0, 1).equals("#")){
+            clubId = "#" + clubId;
+        }
+        clubId = URLEncoder.encode(clubId, StandardCharsets.UTF_8);
+
+        return getJSONResponse(BASE_URL + "clubs/" + clubId);
+    }
+
+    public static JSONObject getJSONPlayer(String playerId){
+        if(!playerId.substring(0, 1).equals("#")){
+            playerId = "#" + playerId;
+        }
+        playerId = URLEncoder.encode(playerId, StandardCharsets.UTF_8);
+
+        return getJSONResponse(BASE_URL + "players/" + playerId);
+    }
+
+
+
     public static int getRequiredTrophies(String clubId){
         JSONObject clubinfo = getJSONClub(clubId);
         return clubinfo.getInt("requiredTrophies");
@@ -47,5 +62,10 @@ public class APIWrangler {
     public static int getClubTrophies(String clubId){
         JSONObject clubinfo = getJSONClub(clubId);
         return clubinfo.getInt("trophies");
+    }
+
+    public static int getPlayerTrophies(String playerId){
+        JSONObject playerinfo = getJSONPlayer(playerId);
+        return playerinfo.getInt("trophies");
     }
 }

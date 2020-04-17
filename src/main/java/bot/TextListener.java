@@ -27,7 +27,7 @@ public class TextListener extends ListenerAdapter {
             return;
         }
 
-        content = content.substring(1).trim();
+        content = content.substring(1).toLowerCase().trim();
         ArrayList<String> args = new ArrayList<>(Arrays.asList(content.split(" ")));
 
         switch (args.get(0)) {
@@ -44,6 +44,30 @@ public class TextListener extends ListenerAdapter {
             case "b2b" -> {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setTitle("NA Peak > B2B");
+                channel.sendMessage(embed.build()).queue();
+            }
+            case "hasgeniepushedto30kyet" -> {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setAuthor("NA Peak Bot", null, "https://cdn.discordapp.com/icons/700098739326418964/2b7ab40fe5227f9545222d720d36de3c.png?size=128");
+                embed.setTitle("Has Genie pushed to 30k yet?");
+
+                int geniesTrophies = APIWrangler.getPlayerTrophies("#829LJ28CU");
+                embed.addField("\uD83C\uDFC6 " + geniesTrophies, geniesTrophies >= 30000 ? "\uD83D\uDE04 Yes" : "\uD83D\uDE14 No", false);
+
+                embed.setTimestamp(Instant.now());
+                embed.setFooter("best club NA");
+                channel.sendMessage(embed.build()).queue();
+            }
+            case "hasdigpushedto30kyet" -> {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setAuthor("NA Peak Bot", null, "https://cdn.discordapp.com/icons/700098739326418964/2b7ab40fe5227f9545222d720d36de3c.png?size=128");
+                embed.setTitle("Has Dig pushed to 30k yet?");
+
+                int digsTrophies = APIWrangler.getPlayerTrophies("#8R2GU0VC");
+                embed.addField("\uD83C\uDFC6 " + digsTrophies, digsTrophies >= 30000 ? "\uD83D\uDE04 Yes" : "\uD83D\uDE14 No", false);
+
+                embed.setTimestamp(Instant.now());
+                embed.setFooter("best club NA");
                 channel.sendMessage(embed.build()).queue();
             }
         }
